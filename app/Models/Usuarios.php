@@ -85,7 +85,7 @@ class Usuarios extends DBAbstractModel
     public function login($nombre, $password)
     {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE nombre = :nombre AND password = :password");
+            $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE nombre = :nombre AND password = :password AND cuenta_activa = 1");
             $stmt->execute([':nombre' => $nombre, ':password' => $password]);
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -117,10 +117,11 @@ class Usuarios extends DBAbstractModel
         }
 
         $foto = "default.png";
-        $visible = 1;
+        $visible = 0;
+        $cuenta_activa = 0;
 
         // Una vez comprobado que el usuario no existe, se hace el registro
-        $stmt = $this->db->prepare("INSERT INTO usuarios (nombre, apellidos, foto ,categoria_profesional, email, resumen_perfil, password, visible, token, fecha_creacion_token) VALUES (:nombre, :apellidos, :foto, :categoria_profesional, :email, :resumen_perfil, :password, :visible, :token, :fecha_creacion_token)");
+        $stmt = $this->db->prepare("INSERT INTO usuarios (nombre, apellidos, foto ,categoria_profesional, email, resumen_perfil, password, visible, token, fecha_creacion_token, cuenta_activa) VALUES (:nombre, :apellidos, :foto, :categoria_profesional, :email, :resumen_perfil, :password, :visible, :token, :fecha_creacion_token, :cuenta_activa)");
         $stmt->execute([
             ':nombre' => $nombre,
             ':apellidos' => $apellidos,
@@ -131,7 +132,9 @@ class Usuarios extends DBAbstractModel
             ':password' => $password,
             ':visible' => $visible,
             ':token' => $token,
-            ':fecha_creacion_token' => $fecha_creacion_token
+            ':fecha_creacion_token' => $fecha_creacion_token,
+            ':cuenta_activa' => $cuenta_activa
+
         ]);
         if ($stmt->rowCount() > 0) {
             echo "<h2>Usuario registrado</h2>";
@@ -143,38 +146,38 @@ class Usuarios extends DBAbstractModel
 
 
         // // Enviar correo de confirmación
-        // $emailSender = new EmailSender;
-        // $emailSender->sendConfirmationMail($nombre, $apellidos, $email, $token);
+        $emailSender = new EmailSender;
+        $emailSender->sendConfirmationMail($nombre, $apellidos, $email, $token);
     }
 
     // Verificar token del usuario
     public function verificarToken($token)
     {
-        $this->query = "SELECT * FROM usuarios WHERE token = :token";
-        $this->parametros['token'] = $token;
-        $this->get_results_from_query();
-        if (count($this->rows) == 0) {
-            $this->mensaje = 'Token no encontrado';
-        } else {
-            $fecha_creacion_token = $this->rows[0]['fecha_creacion_token'];
-            $fecha_creacion_token = strtotime($fecha_creacion_token);
-            $fecha_actual = strtotime(date('Y-m-d H:i:s'));
-            $diferencia = $fecha_actual - $fecha_creacion_token;
-            if ($diferencia > 86400) {
-                $this->mensaje = 'Token expirado';
+        $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE token = :token");
+        $stmt->execute([':token' => $token]);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($usuario) {
+            $fecha_creacion_token = $usuario['fecha_creacion_token'];
+            $fecha_actual = date('Y-m-d H:i:s');
+            $diferencia = strtotime($fecha_actual) - strtotime($fecha_creacion_token);
+            if ($diferencia < 86400) {
+                $stmt = $this->db->prepare("UPDATE usuarios SET token = NULL, fecha_creacion_token = NULL, visible = 1 , cuenta_activa = 1 WHERE token = :token", );
+                $stmt->execute([':token' => $token]);
+                $this->mensaje = 'Usuario verificado';
+                
+
             } else {
-                $this->query = "UPDATE usuarios SET cuenta_activa = 1 WHERE token = :token";
-                $this->parametros['token'] = $token;
-                $this->get_results_from_query();
-                $this->mensaje = 'Cuenta activada. Ya puedes iniciar sesión.';
+                $this->mensaje = 'El token ha caducado';
             }
+        } else {
+            $this->mensaje = 'Token no encontrado';
         }
     }
 
-    public function update($id, $nombre, $apellidos, $password, $email, $categoria_profesional, $resumen_perfil)
+    public function update($id, $nombre, $apellidos, $password, $email, $categoria_profesional, $resumen_perfil, $visible)
     {
         try {
-            $stmt = $this->db->prepare("UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, password = :password, email = :email, categoria_profesional = :categoria_profesional, resumen_perfil = :resumen_perfil WHERE id = :id");
+            $stmt = $this->db->prepare("UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, password = :password, email = :email, categoria_profesional = :categoria_profesional, resumen_perfil = :resumen_perfil, visible = :visible WHERE id = :id");
             $stmt->execute([
                 ':nombre' => $nombre,
                 ':apellidos' => $apellidos,
@@ -182,6 +185,7 @@ class Usuarios extends DBAbstractModel
                 ':email' => $email,
                 ':categoria_profesional' => $categoria_profesional,
                 ':resumen_perfil' => $resumen_perfil,
+                ':visible' => $visible,
                 ':id' => $id
             ]);
             return $stmt->rowCount() > 0;

@@ -37,129 +37,150 @@ $skills = $data['skills'];
 
     <section>
         <section class="perfil">
-            <h4>Perfil</h4>
-            <img src="/img/<?php echo htmlspecialchars($usuario['foto']); ?>" alt="img" width="50px">
-            <?php echo htmlspecialchars($usuario["nombre"]) ?>
-            <?php echo htmlspecialchars($usuario["apellidos"]) ?>
-            <?php echo htmlspecialchars($usuario["categoria_profesional"]) ?>
-            <?php echo htmlspecialchars($usuario["resumen_perfil"]) ?>
+            <article class="foto">
+                <img src="/img/<?php echo htmlspecialchars($usuario['foto']); ?>" alt="img">
+            </article>
+            <article class="info">
+                <p>Nombre</p>
+                <?php echo htmlspecialchars($usuario["nombre"]) ?>
+                <p>Apellidos</p>
+                <?php echo htmlspecialchars($usuario["apellidos"]) ?>
+                <p>Email</p>
+                <?php echo htmlspecialchars($usuario["email"]) ?>
+                <p>Categoria Profesional</p>
+                <?php echo htmlspecialchars($usuario["categoria_profesional"]) ?>
+                <p>Resumen Perfil</p>
+                <?php echo htmlspecialchars($usuario["resumen_perfil"]) ?>
+            </article>
         </section>
         <section class="trabajos">
-            <h4>Trabajos</h4>
-            <?php if (empty($trabajos)): ?>
-                <p>No existen trabajos.</p>
-            <?php else: ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Título</th>
-                            <th>Descripción</th>
-                            <th>Fecha_Inicio</th>
-                            <th>Fecha_Fin</th>
-                            <th>Logros</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($trabajos as $trabajo) {
-                            if ($trabajo['visible'] == 1) {
-                                echo "<tr>";
-                                echo "<td>" . htmlspecialchars($trabajo['titulo']) . "</td>";
-                                echo "<td>" . htmlspecialchars($trabajo['descripcion']) . "</td>";
-                                echo "<td>" . htmlspecialchars($trabajo['fecha_inicio']) . "</td>";
-                                echo "<td>" . htmlspecialchars($trabajo['fecha_final']) . "</td>";
-                                echo "<td>" . htmlspecialchars($trabajo['logros']) . "</td>";                         }   
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
+            <?php
+            $cont = 0;
+            foreach ($trabajos as $trabajo) {
+                if ($trabajo['visible'] == 1) {
+                    $cont++;
+                }
+            }
+            if ($cont >= 1) {
+                echo "<h4>Trabajos</h4>";
+                echo "<table>";
+                echo "<thead>";
+                echo "<tr>";
+                echo "<th>Título</th>";
+                echo "<th>Descripción</th>";
+                echo "<th>Fecha_Inicio</th>";
+                echo "<th>Fecha_Fin</th>";
+                echo "<th>Logros</th>";
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody>";
+            }
+
+            foreach ($trabajos as $trabajo) {
+                if ($trabajo['visible'] == 1) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($trabajo['titulo']) . "</td>";
+                    echo "<td>" . htmlspecialchars($trabajo['descripcion']) . "</td>";
+                    echo "<td>" . htmlspecialchars($trabajo['fecha_inicio']) . "</td>";
+                    echo "<td>" . htmlspecialchars($trabajo['fecha_final']) . "</td>";
+                    echo "<td>" . htmlspecialchars($trabajo['logros']) . "</td>";
+                }
+            }
+            ?>
+            </tbody>
+            </table>
         </section>
         <section class="proyectos">
-            <h4>Proyectos</h4>
-            <?php if (empty($proyectos)): ?>
-                <p>No existen proyectos.</p>
-            <?php else: ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Título</th>
-                            <th>Descripción</th>
-                            <th>Logo</th>
-                            <th>Tecnologias</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($proyectos as $proyecto) {
-                            if ($proyecto['visible'] == 1) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($proyecto['titulo']) . "</td>";
-                            echo "<td>" . htmlspecialchars($proyecto['descripcion']) . "</td>";
-                            echo "<td>" . htmlspecialchars($proyecto['logo']) . "</td>";
-                            echo "<td>" . htmlspecialchars($proyecto['tecnologias']) . "</td>";
-                            echo "</tr>";
-                            }
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
+            <?php
+            $cont = 0;
+            foreach ($proyectos as $proyecto) {
+                if ($proyecto['visible'] == 1) {
+                    $cont++;
+                }
+            }
+            if ($cont >= 1) {
+                echo "<h4>Proyectos</h4>";
+                echo "<table>";
+                echo "<thead>";
+                echo "<tr>";
+                echo "<th>Título</th>";
+                echo "<th>Descripción</th>";
+                echo "<th>Logo</th>";
+                echo "<th>Tecnologias</th>";
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody>";
+            }
+
+            foreach ($proyectos as $proyecto) {
+                if ($proyecto['visible'] == 1) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($proyecto['titulo']) . "</td>";
+                    echo "<td>" . htmlspecialchars($proyecto['descripcion']) . "</td>";
+                    echo "<td>" . htmlspecialchars($proyecto['logo']) . "</td>";
+                    echo "<td>" . htmlspecialchars($proyecto['tecnologias']) . "</td>";
+                    echo "</tr>";
+                }
+            }
+            ?>
+            </tbody>
+            </table>
         </section>
 
         <section class="redes-sociales">
-            <h4>Redes Sociales</h4>
-            <?php if (empty($redes_sociales)): ?>
-                <p>No existen redes sociales.</p>
-            <?php else: ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>URL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($redes_sociales as $red_social) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($red_social['redes_socialescol']) . "</td>";
-                            echo "<td>" . htmlspecialchars($red_social['url']) . "</td>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
+            <?php if ($redes_sociales) {
+                echo "<h4>Redes Sociales</h4>";
+                echo "<table>";
+                echo "<thead>";
+                echo "<tr>";
+                echo "<th>Nombre</th>";
+                echo "<th>URL</th>";
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody>";
+            }
+
+
+            foreach ($redes_sociales as $red_social) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($red_social['redes_socialescol']) . "</td>";
+                echo "<td>" . htmlspecialchars($red_social['url']) . "</td>";
+            }
+            ?>
+            </tbody>
+            </table>
         </section>
 
         <section class="skills">
-            <h4>Habilidades</h4>
-            <?php if (empty($skills)): ?>
-                <p>No existen habilidades.</p>
-            <?php else: ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Habilidad</th>
-                            <th>Categoría Habilidad</th>
-                            <th>Visible</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
+            <?php 
+            $cont = 0;
+            foreach ($skills as $skill) {
+                if ($skill['visible'] == 1) {
+                    $cont++;
+                }
+            }
+            if ($cont >= 1) {
+                echo "<h4>Habilidades</h4>";
+                echo "<table>";
+                echo "<thead>";
+                echo "<tr>";
+                echo "<th>Habilidad</th>";
+                echo "<th>Categoría Habilidad</th>";
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody>";
+            }
                         foreach ($skills as $skill) {
                             if ($skill['visible'] == 1) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($skill['habilidades']) . "</td>";
-                            echo "<td>" . htmlspecialchars($skill['categorias_skills_categoria']) . "</td>";
-                            echo "</tr>";
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($skill['habilidades']) . "</td>";
+                                echo "<td>" . htmlspecialchars($skill['categorias_skills_categoria']) . "</td>";
+                                echo "</tr>";
                             }
                         }
                         ?>
                     </tbody>
                 </table>
-            <?php endif; ?>
         </section>
 
     </section>

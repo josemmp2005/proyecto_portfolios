@@ -105,19 +105,18 @@ class Proyectos extends DBAbstractModel
         } else {
             $this->mensaje = 'Error al añadir proyecto';
         }
-        $this->get_results_from_query();
     }
 
     public function eliminarProyecto($id)
     {
-        $stmt = $this->db->prepare("DELETE FROM proyectos WHERE id = :id") ;
-        $stmt->execute(['id' => $id]);
-        if ($stmt->rowCount() > 0) {
-            $this->mensaje = 'Proyecto eliminado';
+        if ($id != '') {
+            $this->query = "DELETE FROM proyectos WHERE id = :id";
+            $stmt = $this->db->prepare($this->query);
+            $stmt->execute(['id' => $id]);
+            $this->mensaje = ($stmt->rowCount() > 0) ? 'Proyecto eliminado' : 'Error al eliminar proyecto';
         } else {
-            $this->mensaje = 'Error al eliminar proyecto';
+            $this->mensaje = 'ID no proporcionado';
         }
-        $this->get_results_from_query();
     }
 
     public function ocultarProyecto($id)
@@ -137,5 +136,25 @@ class Proyectos extends DBAbstractModel
             $this->get_results_from_query();
             $this->mensaje = 'Proyecto mostrado';
         }
+    }
+
+    public function editarProyecto( $id, $titulo, $descripcion, $logo, $tecnologias, $visible, $usuarios_id)
+    {
+        $stmt = $this->db->prepare("UPDATE proyectos SET titulo = :titulo, descripcion = :descripcion, logo = :logo, tecnologias = :tecnologias, visible = :visible, usuarios_id = :usuarios_id WHERE id = :id");
+        $stmt->execute([
+            'titulo' => $titulo,
+            'descripcion' => $descripcion,
+            'logo' => $logo,
+            'tecnologias' => $tecnologias,
+            'visible' => $visible,
+            'usuarios_id' => $usuarios_id,
+            'id' => $id
+        ]);
+        if ($stmt->rowCount() > 0) {
+            $this->mensaje = 'Proyecto editado';
+        } else {
+            $this->mensaje = 'Error al editar proyecto';
+        }
+
     }
 }

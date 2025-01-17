@@ -97,8 +97,13 @@ class RedesSociales extends DBAbstractModel
     public function eliminarRedSocial($id)
     {
         $this->query = "DELETE FROM redes_sociales WHERE id = :id";
-        $this->parametros['id'] = $id;
-        $this->get_results_from_query();
+        $stmt = $this->db->prepare($this->query);
+        $stmt->execute(['id' => $id]);
+        if ($stmt->rowCount() > 0) {
+            $this->mensaje = 'Red social eliminada';
+        } else {
+            $this->mensaje = 'Error al eliminar red social';
+        }
     }
 
     public function ocultarRedSocial($id)
@@ -120,4 +125,19 @@ class RedesSociales extends DBAbstractModel
         }
     }
 
+    public function editarRedSocial($id, $redes_socialescol, $url, $usuarios_id)
+    {
+        $stmt = $this->db->prepare("UPDATE redes_sociales SET redes_socialescol = :redes_socialescol, url = :url, usuarios_id = :usuarios_id WHERE id = :id");
+        $stmt->execute([
+            'redes_socialescol' => $redes_socialescol,
+            'url' => $url,
+            'usuarios_id' => $usuarios_id,
+            'id' => $id
+        ]);
+        if ($stmt->rowCount() > 0) {
+            $this->mensaje = 'Red social editada';
+        } else {
+            $this->mensaje = 'Error al editar red social';
+        }
+    }
 }

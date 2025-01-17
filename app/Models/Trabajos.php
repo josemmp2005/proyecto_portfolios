@@ -44,6 +44,10 @@ class Trabajos extends DBAbstractModel
     private $created_at;
     private $updated_at;
 
+    public function getMensaje() {
+        return $this->mensaje;
+    }
+
     public function setID($id)
     {
         $this->id = $id;
@@ -77,15 +81,19 @@ class Trabajos extends DBAbstractModel
     {
         $this->visible = $visible;
     }
-
-    public function getMensaje()
-    {
-        return $this->mensaje;
-    }
-
     public function set() {}
 
-    public function get($id = "") {}
+    public function get($id = "") {
+        if ($id != '') {
+            $this->query = "SELECT * FROM trabajos WHERE id = :id";
+            $stmt = $this->db->prepare($this->query);
+            $stmt->execute(['id' => $id]);
+            $this->rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        $this->mensaje = ($stmt->rowCount() > 0) ? 'Trabajo encontrado' : 'Error al encontrar trabajo';
+        $this->get_results_from_query();
+
+    }
 
     public function edit() {}
 
@@ -108,53 +116,73 @@ class Trabajos extends DBAbstractModel
         return $trabajos;
     }
 
-    public function anadirTrabajo($titulo, $descripcion, $fecha_inicio, $fecha_final, $logros, $usuarios_id)
+    public function anadirTrabajo($titulo, $descripcion, $fecha_inicio, $fecha_final, $logros, $visible, $usuarios_id)
     {
-        $visible = 1;
         $stmt = $this->db->prepare("INSERT INTO trabajos (titulo, descripcion, fecha_inicio, fecha_final, logros, visible, usuarios_id) VALUES (:titulo, :descripcion, :fecha_inicio, :fecha_final, :logros, :visible, :usuarios_id)");
         $stmt->execute([
             'titulo' => $titulo,
             'descripcion' => $descripcion,
             'fecha_inicio' => $fecha_inicio,
             'fecha_final' => $fecha_final,
-            'logo' => $logros,
+            'logros' => $logros,
             'visible' => $visible,
             'usuarios_id' => $usuarios_id
         ]);
         if ($stmt->rowCount() > 0) {
             $this->mensaje = 'Trabajo añadido';
         } else {
-            
+            $this->mensaje = 'Error al añadir trabajo';
         }
-        $this->get_results_from_query();
     }
     
 
-    public function eliminarTrabajo($id)
-    {
-        $this->query = "DELETE FROM trabajos WHERE id = :id";
-        $this->parametros['id'] = $id;
-        $this->get_results_from_query();
-        $this->mensaje = 'Trabajo eliminado';
-    }
-
-    public function ocultarTrabajo($id)
-    {
-        $this->query = "SELECT * FROM trabajos WHERE id = :id";
-        $this->parametros['id'] = $id;
-        $this->get_results_from_query();
-        
-        if ($this->rows[0]['visible'] == 1) {
-            $this->query = "UPDATE trabajos SET visible = 0 WHERE id = :id";
-            $this->parametros['id'] = $id;
-            $this->get_results_from_query();
-            $this->mensaje = 'Trabajo ocultado';
+    public function eliminarTrabajo($id = '') {
+        if ($id != '') {
+            $this->query = "DELETE FROM trabajos WHERE id = :id";
+            $stmt = $this->db->prepare($this->query);
+            $stmt->execute(['id' => $id]);
+            $this->mensaje = ($stmt->rowCount() > 0) ? 'Trabajo eliminado' : 'Error al eliminar trabajo';
         } else {
-            $this->query = "UPDATE trabajos SET visible = 1 WHERE id = :id";
-            $this->parametros['id'] = $id;
-            $this->get_results_from_query();
-            $this->mensaje = 'Trabajo mostrado';
+            $this->mensaje = 'ID no proporcionado';
         }
     }
+
+    public function editarTrabajo($id, $titulo, $descripcion, $fecha_inicio, $fecha_final, $logros, $visible, $usuarios_id){
+        $stmt = $this->db->prepare("UPDATE trabajos SET titulo = :titulo, descripcion = :descripcion, fecha_inicio = :fecha_inicio, fecha_final = :fecha_final, logros = :logros, visible = :visible, usuarios_id = :usuarios_id WHERE id = :id");
+        $stmt->execute([
+            'titulo' => $titulo,
+            'descripcion' => $descripcion,
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_final' => $fecha_final,
+            'logros' => $logros,
+            'visible' => $visible,
+            'usuarios_id' => $usuarios_id,
+            'id' => $id
+        ]);
+        if ($stmt->rowCount() > 0) {
+            $this->mensaje = 'Trabajo editado';
+        } else {
+            $this->mensaje = 'Error al editar trabajo';
+        }
+    }
+
+    // public function ocultarTrabajo($id)
+    // {
+    //     $this->query = "SELECT * FROM trabajos WHERE id = :id";
+    //     $this->parametros['id'] = $id;
+    //     $this->get_results_from_query();
+        
+    //     if ($this->rows[0]['visible'] == 1) {
+    //         $this->query = "UPDATE trabajos SET visible = 0 WHERE id = :id";
+    //         $this->parametros['id'] = $id;
+    //         $this->get_results_from_query();
+    //         $this->mensaje = 'Trabajo ocultado';
+    //     } else {
+    //         $this->query = "UPDATE trabajos SET visible = 1 WHERE id = :id";
+    //         $this->parametros['id'] = $id;
+    //         $this->get_results_from_query();
+    //         $this->mensaje = 'Trabajo mostrado';
+    //     }
+    // }
 
 }

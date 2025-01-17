@@ -31,8 +31,6 @@ class UserController extends BaseController
         } else {
             $autenticado = false;
         }
-        $claseCategoria = CategoriaSkills::getInstancia();
-        $_SESSION["categoria"] = $claseCategoria->getAll();
         $portfolios = [];
 
         try {
@@ -125,6 +123,26 @@ class UserController extends BaseController
         }
     }
 
+    public function verificarAction()
+    {
+        // var_dump(value: $_SERVER['REQUEST_URI']);
+        $token = explode('/', string: $_SERVER['REQUEST_URI']);
+        $token = array_slice($token, 2);
+        $token = implode('/', $token);
+        var_dump($token);
+        $claseUsuario = Usuarios::getInstancia();
+        $claseUsuario->verificarToken($token);
+        if ($claseUsuario->getMensaje() == 'Usuario verificado') {
+            echo "<h2>" . $claseUsuario->getMensaje() . "</h2>";
+            $_SESSION['auth'] = true;
+            $_SESSION['usuario'] = $claseUsuario->nombre;
+            $_SESSION['tipo'] = 'Usuario';
+            header('Location: /');
+        } else {
+            echo "<h2>" . $claseUsuario->getMensaje() . "</h2>";
+        }
+    }
+
     public function editAction()
     {
         $id = $_SESSION['id'] ?? null;
@@ -150,14 +168,16 @@ class UserController extends BaseController
                     $email = $_POST['email'] ?? $usuario['email'];
                     $categoria_profesional = $_POST['categoria_profesional'] ?? $usuario['categoria_profesional'];
                     $resumen_perfil = $_POST['resumen_perfil'] ?? $usuario['resumen_perfil'];
-
-                    $updated = $claseUsuario->update($id, $nombre, $apellidos, $password, $email, $categoria_profesional, $resumen_perfil);
+                    $visible = isset($_POST['visible']) ? 1 : 0;
+                    $updated = $claseUsuario->update($id, $nombre, $apellidos, $password, $email, $categoria_profesional, $resumen_perfil, $visible);
 
                     if ($updated) {
                         echo "<h2>Usuario actualizado</h2>";
                         header('Location: /');
                     } else {
                         echo "<h2>Error al actualizar usuario</h2>";
+                        header('Location: /');
+
                     }
 
                 } else {

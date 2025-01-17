@@ -34,16 +34,49 @@ class ProyectoController extends BaseController
         }
     }
 
-    public function eliminarProyecto() {
-        // Lógica para eliminar el proyecto de la base de datos
-        $id = $_GET['id'] ?? null;
+    public function editarProyecto()
+    {
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+
         if (!$id) {
-            header('Location: /edit');
+            echo "<h2>ID no proporcionado</h2>";
             return;
         }
-        $proyecto = Proyectos::getInstancia();
-        $proyecto->eliminarProyecto($id);
-        // Redirigir a la vista de proyectos después de eliminar
-        header('Location: /edit');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $titulo = $_POST['titulo'] ?? null;
+            $descripcion = $_POST['descripcion'] ?? null;
+            $logo = $_POST['logo'] ?? null;
+            $tecnologias = $_POST['tecnologias'] ?? null;
+            $visible = isset($_POST['visible']) ? 1 : 0;
+            $usuarios_id = $_SESSION['id'];
+            $proyecto = Proyectos::getInstancia();
+            $proyecto->editarProyecto($id, $titulo, $descripcion, $logo, $tecnologias, $visible, $usuarios_id);
+            header('Location: /edit');
+        } else {
+            $proyecto = Proyectos::getInstancia();
+            $proyecto = $proyecto->getProyectosPorUsuariosId($_SESSION['id']);
+            $this->renderHTML('../views/edit_proyecto_view.php', [
+                'proyecto' => $proyecto,
+            ]);
+        }
+    }
+    public function eliminarProyecto()
+    {
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+
+        if (!$id) {
+            echo "<h2>ID no proporcionado</h2>";
+            return;
+        }
+
+        $proyectos = Proyectos::getInstancia();
+        $proyectos->eliminarProyecto($id);
+
+        if ($proyectos->getMensaje() == 'Proyecto eliminado') {
+            header('Location: /edit');
+        } else {
+            echo "<h2>Error al eliminar el proyecto</h2>";
+        }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 namespace App\Models;
+
+use \Exception;
 abstract class DBAbstractModel
 {
     private static $db_host = DBHOST;
@@ -50,27 +52,31 @@ abstract class DBAbstractModel
         $this->conn = null;
     }
 
-    protected function get_results_from_query()
-    {
+    protected function get_results_from_query() {
         $this->open_connection();
-        if (($_stmt = $this->conn->prepare($this->query))) {
-            #PREG_PATTERN_ORDER flag para especificar como se cargan los resultados en $named.
-            if (preg_match_all('/(:\w+)/', $this->query, $_named, PREG_PATTERN_ORDER)) {
-                $_named = array_pop($_named);
-                foreach ($_named as $_param) {
-                    $_stmt->bindValue($_param, $this->parametros[substr($_param, 1)]);
+        
+        if ($this->query != '') {
+            try {
+                $stmt = $this->conn->prepare($this->query);
+                
+                if (preg_match_all('/(:\w+)/', $this->query, $_named, PREG_PATTERN_ORDER)) {
+                    $_named = array_pop($_named);
+                    foreach ($_named as $_param) {
+                        $stmt->bindValue($_param, $this->parametros[substr($_param, 1)]);
+                    }
                 }
+                
+                $stmt->execute();
+                $this->rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                $stmt->closeCursor();
+            } catch (\PDOException $e) {
+                printf("Error en consulta: %s\n", $e->getMessage());
             }
+        } else {
+            throw new Exception('Query is empty');
         }
-        try {
-            if (!$_stmt->execute()) {
-                printf("Error de consulta: %s\n", $_stmt->errorInfo()[2]);
-            }
-            $this->rows = $_stmt->fetchAll(\PDO::FETCH_ASSOC);
-            $_stmt->closeCursor();
-        } catch (\PDOException $e) {
-            printf("Error en consulta: %s\n", $e->getMessage());
-        }
+        
+        $this->close_connection();
     }
 }
 

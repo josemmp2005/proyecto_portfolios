@@ -1,5 +1,5 @@
 <?php
-    $categorias = $_SESSION["categoriasSkill"]
+    $categorias = $data['categorias'];
 ?>
 
 <!DOCTYPE html>

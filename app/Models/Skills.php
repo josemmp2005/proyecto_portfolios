@@ -86,14 +86,15 @@ class Skills extends DBAbstractModel
         } else {
             $this->mensaje = 'Error al añadir skill';
         }
-        $this->get_results_from_query();
     }
 
     public function eliminarSkill($id)
     {
         $this->query = "DELETE FROM skills WHERE id = :id";
-        $this->parametros['id'] = $id;
-        $this->get_results_from_query();
+        $stmt = $this->db->prepare($this->query);
+        $stmt->execute(['id' => $id]);
+        $this->mensaje = ($stmt->rowCount() > 0) ? 'Skill eliminada' : 'Error al eliminar skill';
+        
     }
 
     public function ocultarSkill($id)
@@ -113,5 +114,17 @@ class Skills extends DBAbstractModel
             $this->get_results_from_query();
             $this->mensaje = 'Skill mostrada';
         }
+    }
+
+    public function editarSkill( $id, $habilidades, $visible, $categorias_skills, $usuarios_id)
+    {
+        $stmt = $this->db->prepare("UPDATE skills SET habilidades = :habilidades, visible = :visible, categorias_skills_categoria = :categorias_skills_categoria, usuarios_id = :usuarios_id WHERE id = :id");
+        $stmt->execute([':habilidades' => $habilidades, ':visible' => $visible, ':categorias_skills_categoria' => $categorias_skills, ':usuarios_id' => $usuarios_id, ':id' => $id]);
+        if ($stmt->rowCount() > 0) {
+            $this->mensaje = 'Skill editada';
+        } else {
+            $this->mensaje = 'Error al editar skill';
+        }
+
     }
 }

@@ -65,8 +65,55 @@ $router->add(array(
 
 $router->add(array(
     'name' => 'eliminarProyecto',
-    'path' => '/^\/eliminarProyecto\/id=\d+$/',
+    'path' => '/^\/eliminarProyecto\?id=\d+$/',
     'action' => [ProyectoController::class, 'eliminarProyecto'],
+));
+$router->add(array(
+    'name' => 'eliminarTrabajo',
+    'path' => '/^\/eliminarTrabajo\?id=\d+$/',
+    'action' => [TrabajoController::class, 'eliminarTrabajo'],
+));
+$router->add(array(
+    'name' => 'editarTrabajo',
+    'path' => '/^\/editarTrabajo\?id=\d+$/',
+    'action' => [TrabajoController::class, 'editarTrabajo'],
+));
+
+$router->add(array(
+    'name' => 'editarProyecto',
+    'path' => '/^\/editarProyecto\?id=\d+$/',
+    'action' => [ProyectoController::class, 'editarProyecto'],
+));
+
+$router->add(array(
+    'name' => 'editarRedSocial',
+    'path' => '/^\/editarRedSocial\?id=\d+$/',
+    'action' => [RedSocialController::class, 'editarRedSocial'],
+));
+
+$router->add(array(
+    'name' => 'eliminarRedSocial',
+    'path' => '/^\/eliminarRedSocial\?id=\d+$/',
+    'action' => [RedSocialController::class, 'eliminarRedSocial'],
+));
+
+$router->add(array(
+    'name' => 'editarSkill',
+    'path' => '/^\/editarSkill\?id=\d+$/',
+    'action' => [SkillController::class, 'editarSkill'],
+));
+
+$router->add(array(
+    'name' => 'eliminarSkill',
+    'path' => '/^\/eliminarSkill\?id=\d+$/',
+    'action' => [SkillController::class, 'eliminarSkill'],
+));
+
+$router->add(array(
+    'name' => 'verificar',
+    'path' => '/^\/verificar(\/|\?token=)[\w\.\+\-\/=]+$/',
+    'method' => 'GET',
+    'action' => [UserController::class, 'verificarAction'],
 ));
 
 $router->add(array(

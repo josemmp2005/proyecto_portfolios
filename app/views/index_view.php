@@ -7,6 +7,7 @@
  */
 $autenticado = $data['autenticado'];
 $portfolios = $data['portfolios'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +51,9 @@ $portfolios = $data['portfolios'];
                         echo '<h3>' . htmlspecialchars($portfolio['nombre']) . '</h3>';
                         echo '<p class="correo">' . htmlspecialchars($portfolio['email']) . '</p>';
                         echo '<p class="categoriaProfesional">' . htmlspecialchars($portfolio['categoria_profesional']) . '</p>';
-                        echo '<a href="/verPortfolio?id=' . htmlspecialchars($portfolio['id']) . '">Ver más</a>';
+                        echo '<a href="/verPortfolio?id=' . htmlspecialchars($portfolio['id']) . '">';
+                        echo '<img src= img/visibility.svg alt=img id=visibility>';
+                        echo '</a>';
                         echo '</article>';
                     }
                 }
