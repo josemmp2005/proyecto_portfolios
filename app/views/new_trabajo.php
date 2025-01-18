@@ -1,3 +1,9 @@
+<?php
+/**
+ * Vista para añadir un trabajo
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

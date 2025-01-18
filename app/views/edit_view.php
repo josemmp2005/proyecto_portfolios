@@ -1,10 +1,14 @@
 <?php
+/**
+ * Vista de edición de perfil 
+ */
+
+// Se reciben los datos del usuario, trabajos, proyectos, redes sociales y habilidades desde el controlador de perfil
 $usuario = $data['usuario'];
 $trabajos = $data['trabajos'];
 $proyectos = $data['proyectos'];
 $redes_sociales = $data['redes_sociales'];
 $skills = $data['skills'];
-
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +19,6 @@ $skills = $data['skills'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
     <title>Perfil</title>
-
 </head>
 
 <body>

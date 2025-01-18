@@ -1,4 +1,9 @@
 <?php
+    /**
+     *  Vista para editar un trabajo 
+     */
+
+     // Se obtiene todos los trabajos del usuario y se busca el trabajo a editar por su ID
     $trabajos = $data["trabajo"];
     $id = $_GET['id'];
     $trabajo = null;

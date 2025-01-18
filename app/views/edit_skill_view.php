@@ -1,20 +1,25 @@
 <?php
-    $skills = $data["skill"];
-    $id = $_GET['id'];
-    $skill = null;
+/**
+ * Vista para editar una habilidad
+ */
 
-    foreach ($skills as $s) {
-        if ($s['id'] == $id) {
-            $skill = $s;
-            break;
-        }
+// Se obtienen los datos de la habilidad a editar y las categorías de habilidades desde el controlador de habilidades 
+$skills = $data["skill"];
+$id = $_GET['id'];
+$skill = null;
+
+foreach ($skills as $s) {
+    if ($s['id'] == $id) {
+        $skill = $s;
+        break;
     }
+}
 
-    if ($skill === null) {
-        echo "Habilidad no encontrada.";
-    } 
-    
-    $categorias = $data['categorias'];    
+if ($skill === null) {
+    echo "Habilidad no encontrada.";
+}
+
+$categorias = $data['categorias'];
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +30,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
     <title>Perfil</title>
-
 </head>
 
 <body>
@@ -42,7 +46,8 @@
         <section class="editarPerfil">
             <form action="" method="post" class="form-new-trabajo">
                 <label for="habilidad">Habilidad:</label>
-                <input type="text" id="habilidades" name="habilidades" value="<?php echo $skill['habilidades']; ?>" required><br>
+                <input type="text" id="habilidades" name="habilidades" value="<?php echo $skill['habilidades']; ?>"
+                    required><br>
                 <label for="categoria_habilidad">Categoría Habilidad:</label>
                 <select name="categoria_habilidad" id="categoria_habilidad">
                     <?php foreach ($categorias as $categoria) {
@@ -54,7 +59,7 @@
                 <input type="checkbox" id="visible" name="visible" value="1" <?php echo $skill['visible'] == 1 ? "checked" : "" ?>>
                 <input type="submit" name="submit" value="Editar">
             </form>
-        </section>        
+        </section>
     </main>
     <footer class="footerLogin">
         <p>José María Mayén Perez</p>

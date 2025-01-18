@@ -1,3 +1,10 @@
+<?php
+/**
+ * Vista para añadir una red social
+ */
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

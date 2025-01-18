@@ -3,10 +3,15 @@
 use App\Models\Usuarios;
 
 session_start();
+
+//Carga de archivos de configuración de la autocarga de clases
 require('../vendor/autoload.php');
+
+//Carga de archivos de configuración
 require "../bootstrap.php";
 require "../app/conf/conf.php";
 
+// Importación de clases
 use App\Core\Router;
 use App\Controllers\UserController;
 use App\Controllers\TrabajoController;
@@ -14,6 +19,7 @@ use App\Controllers\ProyectoController;
 use App\Controllers\RedSocialController;
 use App\Controllers\SkillController;
 
+// Creación de rutas
 $router = new Router();
 $router->add(array(
     'name' => 'home',
@@ -122,15 +128,19 @@ $router->add(array(
     'action' => [UserController::class, 'verPortfolio'],
 ));
 
+// Obtiene la solicitud actual, eliminando la base URL de la ruta
 $request = str_replace(DIRBASEURL, '', $_SERVER['REQUEST_URI']); 
-// echo $request;
+
+// Busca la ruta correspondiente a la solicitud
 $route = $router->match(request: $request);
 if ($route) {
+    // Si la ruta existe, se ejecuta el controlador y acción correspondientes
     $controllerName = $route['action'][0];
     $actionName = $route['action'][1];
     $controller = new $controllerName;
     $controller->$actionName($request);
 
 } else {
+    // Si no se encuentra la ruta, muestra un mensaje de error
     echo "No route";
 }

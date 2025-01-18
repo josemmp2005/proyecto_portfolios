@@ -1,3 +1,9 @@
+<?php
+/**
+ * Vista para el registro de usuarios
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 

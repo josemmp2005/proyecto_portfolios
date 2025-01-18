@@ -1,10 +1,9 @@
 <?php
 /**
- * Principal view of the application Portfolio
- * 
- * author: José María Mayén Pérez
+ * Vista principal de la aplicación
  * 
  */
+
 $autenticado = $data['autenticado'];
 $portfolios = $data['portfolios'];
 
@@ -47,7 +46,6 @@ $portfolios = $data['portfolios'];
                     if ($portfolio['visible'] == 1) {
                         echo '<article>';
                         echo '<img src="' . "img/". htmlspecialchars($portfolio['foto']) . '" alt="img">';
-                        ;
                         echo '<h3>' . htmlspecialchars($portfolio['nombre']) . '</h3>';
                         echo '<p class="correo">' . htmlspecialchars($portfolio['email']) . '</p>';
                         echo '<p class="categoriaProfesional">' . htmlspecialchars($portfolio['categoria_profesional']) . '</p>';

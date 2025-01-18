@@ -9,17 +9,20 @@ use App\Core\EmailSender;
 use PDO;
 use PDOException;
 
+// Clase para gestionar los usuarios uso del patrón Singleton
 class Usuarios extends DBAbstractModel
 {
-    //Singleton
     private static $instancia;
 
     private $db;
 
+    // Constructor de la clase y conexión a la base de datos
     private function __construct()
     {
         $this->db = conectaDB();
     }
+
+    // Método para obtener una instancia de la clase
     public static function getInstancia()
     {
         if (!isset(self::$instancia)) {
@@ -29,18 +32,19 @@ class Usuarios extends DBAbstractModel
         return self::$instancia;
     }
 
+    // Evita que el objeto se pueda clonar
     public function __clone()
     {
         trigger_error("La clonación no está permitida.", E_USER_ERROR);
     }
 
+    // Propiedades de la clase
     public $id;
     public $nombre;
     public $email;
     public $password;
     public $created_at;
     public $updated_at;
-
     public $trabajos;
 
     public function setID($id)
@@ -68,27 +72,21 @@ class Usuarios extends DBAbstractModel
         return $this->mensaje;
     }
 
-    public function set()
-    {
-    }
-    public function get($id = "")
-    {
-    }
-    public function edit()
-    {
-    }
+    public function set(){}
+    public function get($id = ""){}
+    public function edit(){}
+    public function delete(){}
 
-    public function delete()
-    {
-    }
-
+    // Método para obtener todos los usuarios
     public function login($nombre, $password)
     {
         try {
+            // Comprobar si el usuario existe y la cuenta está activa
             $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE nombre = :nombre AND password = :password AND cuenta_activa = 1");
             $stmt->execute([':nombre' => $nombre, ':password' => $password]);
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            // Si el usuario existe y la cuenta está activa, se asignan las propiedades del objeto
             if ($usuario) {
                 foreach ($usuario as $propiedad => $valor) {
                     $this->$propiedad = $valor;
@@ -105,6 +103,7 @@ class Usuarios extends DBAbstractModel
         }
     }
 
+    // Método para registrar un usuario
     public function registrar($nombre, $apellidos, $password, $email, $categorias_profesional, $resumen_perfil, $token, $fecha_creacion_token)
     {
         // Antescomprobar si el usuario existe
@@ -115,7 +114,7 @@ class Usuarios extends DBAbstractModel
             $this->mensaje = 'El usuario con ese nombre ya existe en la base de datos';
             return;
         }
-
+        
         $foto = "default.png";
         $visible = 0;
         $cuenta_activa = 0;
@@ -157,6 +156,7 @@ class Usuarios extends DBAbstractModel
         $stmt->execute([':token' => $token]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($usuario) {
+            // Comprobar si el token ha caducado
             $fecha_creacion_token = $usuario['fecha_creacion_token'];
             $fecha_actual = date('Y-m-d H:i:s');
             $diferencia = strtotime($fecha_actual) - strtotime($fecha_creacion_token);
@@ -164,8 +164,6 @@ class Usuarios extends DBAbstractModel
                 $stmt = $this->db->prepare("UPDATE usuarios SET token = NULL, fecha_creacion_token = NULL, visible = 1 , cuenta_activa = 1 WHERE token = :token", );
                 $stmt->execute([':token' => $token]);
                 $this->mensaje = 'Usuario verificado';
-                
-
             } else {
                 $this->mensaje = 'El token ha caducado';
             }
@@ -174,6 +172,7 @@ class Usuarios extends DBAbstractModel
         }
     }
 
+    // Método para eliminar un usuario
     public function update($id, $nombre, $apellidos, $password, $email, $categoria_profesional, $resumen_perfil, $visible)
     {
         try {
@@ -237,64 +236,7 @@ class Usuarios extends DBAbstractModel
         return $usuarios;
     }
 
-    public function getUsuario($nombre)
-    {
-        $this->query = "SELECT * FROM usuarios WHERE nombre = :nombre";
-        $this->parametros['nombre'] = $nombre;
-        $this->get_results_from_query();
-        $usuario = $this->rows[0] ?? null;
-        $idUsuario = $usuario['id'];
-        $trabajosModel = new Trabajos;
-        $trabajos = $trabajosModel->getTrabajosPorUsuariosId($idUsuario);
-        $usuario['trabajos'] = $trabajos;
-        $redesSocialesModel = new RedesSociales;
-        $proyectosModel = new Proyectos;
-        $proyectos = $proyectosModel->getProyectosPorUsuariosId($idUsuario);
-        $usuario['proyectos'] = $proyectos;
-        $redesSociales = $redesSocialesModel->getRedesSocialesPorUsuariosId($idUsuario);
-        $usuario['redes_sociales'] = $redesSociales;
-        $skillsModel = new Skills;
-        $skills = $skillsModel->getSkillsPorUsuariosId($idUsuario);
-        $usuario['skills'] = $skills;
-        return $usuario;
-    }
-
-    public function getTrabajo($nombre)
-    {
-        $this->query = "SELECT * FROM trabajos WHERE nombre = :nombre";
-        $this->parametros['nombre'] = $nombre;
-        $this->get_results_from_query();
-        $trabajo = $this->rows[0] ?? null;
-        return $trabajo;
-    }
-
-    public function getProyecto($nombre)
-    {
-        $this->query = "SELECT * FROM proyectos WHERE nombre = :nombre";
-        $this->parametros['nombre'] = $nombre;
-        $this->get_results_from_query();
-        $proyecto = $this->rows[0] ?? null;
-        return $proyecto;
-    }
-
-    public function getRedSocial($nombre)
-    {
-        $this->query = "SELECT * FROM redes_sociales WHERE nombre = :nombre";
-        $this->parametros['nombre'] = $nombre;
-        $this->get_results_from_query();
-        $red_social = $this->rows[0] ?? null;
-        return $red_social;
-    }
-
-    public function getHabilidad($nombre)
-    {
-        $this->query = "SELECT * FROM skills WHERE nombre = :nombre";
-        $this->parametros['nombre'] = $nombre;
-        $this->get_results_from_query();
-        $skill = $this->rows[0] ?? null;
-        return $skill;
-    }
-
+    // Método para buscar usuarios por nombre
     public function search($nombre)
     {
         $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE nombre LIKE :nombre");
@@ -333,6 +275,8 @@ class Usuarios extends DBAbstractModel
         }
         return $usuarios;
     }
+
+    // Método para obtener un usuario por su ID
     public function getById($id)
     {
         try {

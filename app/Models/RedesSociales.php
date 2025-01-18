@@ -1,19 +1,24 @@
 <?php
 namespace App\Models;
+
 require_once("DBAbstractModel.php");
+
 use PDO;
 
+// Clase para gestionar las redes sociales uso del patrón Singleton
 class RedesSociales extends DBAbstractModel
 {
     private static $instancia;
 
     private $db;
 
+    // Constructor de la clase y conexión a la base de datos
     private function __construct()
     {
         $this->db = conectaDB();
     }
 
+    // Método para obtener una instancia de la clase
     public static function getInstancia()
     {
         if (!isset(self::$instancia)) {
@@ -23,11 +28,13 @@ class RedesSociales extends DBAbstractModel
         return self::$instancia;
     }
 
+    // Evita que el objeto se pueda clonar
     public function __clone()
     {
         trigger_error("La clonación no está permitida.", E_USER_ERROR);
     }
 
+    // Propiedades de la clase
     private $id;
     private $url;
     private $created_at;
@@ -58,13 +65,15 @@ class RedesSociales extends DBAbstractModel
 
     public function delete() {}
 
+    // Método para obtener todas las redes sociales
     public function getAllRedesSociales()
     {
         $this->query = "SELECT * FROM redes_sociales";
         $this->get_results_from_query();
         return $this->rows;
     }
-
+    
+    // Método para obtener las redes sociales de un usuario
     public function getRedesSocialesPorUsuariosId($id = '')
     {
         $sql = "SELECT * FROM redes_sociales WHERE usuarios_id = :id";
@@ -75,6 +84,7 @@ class RedesSociales extends DBAbstractModel
         return $redes_sociales;
     }
 
+    // Método para añadir una red social
     public function anadirRedSocial( $redes_socialescol, $url, $usuarios_id)
     {
         $stmt = $this->db->prepare("INSERT INTO redes_sociales (redes_socialescol, url, usuarios_id) VALUES (:redes_socialescol, :url, :usuarios_id)");
@@ -94,6 +104,7 @@ class RedesSociales extends DBAbstractModel
 
     }
 
+    // Método para eliminar una red social
     public function eliminarRedSocial($id)
     {
         $this->query = "DELETE FROM redes_sociales WHERE id = :id";
@@ -106,25 +117,7 @@ class RedesSociales extends DBAbstractModel
         }
     }
 
-    public function ocultarRedSocial($id)
-    {
-        $this->query = "SELECT * FROM redes_sociales WHERE id = :id";
-        $this->parametros['id'] = $id;
-        $this->get_results_from_query();
-        
-        if ($this->rows[0]['visible'] == 1) {
-            $this->query = "UPDATE redes_sociales SET visible = 0 WHERE id = :id";
-            $this->parametros['id'] = $id;
-            $this->get_results_from_query();
-            $this->mensaje = 'Red social ocultada';
-        } else {
-            $this->query = "UPDATE redes_sociales SET visible = 1 WHERE id = :id";
-            $this->parametros['id'] = $id;
-            $this->get_results_from_query();
-            $this->mensaje = 'Red social mostrada';
-        }
-    }
-
+    // Método para editar una red social
     public function editarRedSocial($id, $redes_socialescol, $url, $usuarios_id)
     {
         $stmt = $this->db->prepare("UPDATE redes_sociales SET redes_socialescol = :redes_socialescol, url = :url, usuarios_id = :usuarios_id WHERE id = :id");

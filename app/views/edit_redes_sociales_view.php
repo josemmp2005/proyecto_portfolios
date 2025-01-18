@@ -1,4 +1,9 @@
 <?php
+/**
+ * Vista para editar una red social
+ */
+
+ // Se reciben todas las redes sociales del usuario y el ID de la red social a editar
     $redes_sociales = $data["redSocial"];
     $id = $_GET['id'];
     $red_social = null;

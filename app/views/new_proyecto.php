@@ -1,3 +1,9 @@
+<?php
+/**
+ * Vista para añadir un nuevo proyecto
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

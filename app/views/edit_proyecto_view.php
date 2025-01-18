@@ -1,4 +1,9 @@
 <?php
+/**
+ * Vista para editar un proyecto 
+ */
+
+// Se obtiene el proyecto a editar
 $proyectos = $data["proyecto"];
 $id = $_GET['id'];
 $proyecto = null;

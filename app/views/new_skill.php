@@ -1,4 +1,9 @@
 <?php
+    /**
+     * Vista para añadir una habilidad
+     */
+
+     // Obtiene las categorías de habilidades
     $categorias = $data['categorias'];
 ?>
 

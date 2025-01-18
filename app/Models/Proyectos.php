@@ -1,18 +1,24 @@
 <?php
 namespace App\Models;
+
 require_once("DBAbstractModel.php");
+
 use PDO;
 
+// Clase para gestionar los proyectos uso del patrón Singleton
 class Proyectos extends DBAbstractModel
 {
     private static $instancia;
 
     private $db;
 
+    // Constructor de la clase y conexión a la base de datos
     private function __construct()
     {
         $this->db = conectaDB();
     }
+
+    // Método para obtener una instancia de la clase
     public static function getInstancia()
     {
         if (!isset(self::$instancia)) {
@@ -22,15 +28,16 @@ class Proyectos extends DBAbstractModel
         return self::$instancia;
     }
 
+    // Evita que el objeto se pueda clonar
     public function __clone()
     {
         trigger_error("La clonación no está permitida.", E_USER_ERROR);
     }
 
+    // Propiedades de la clase
     private $id;
     private $titulo;
     private $nombre;
-
     private $descripcion;
     private $tecnologias;
     private $created_at;
@@ -63,22 +70,15 @@ class Proyectos extends DBAbstractModel
         return $this->mensaje;
     }
 
-    public function set()
-    {
-    }
+    public function set(){}
 
-    public function get($id = '')
-    {
-    }
+    public function get($id = ''){}
 
-    public function edit()
-    {
-    }
+    public function edit(){}
 
-    public function delete()
-    {
-    }
+    public function delete(){}
 
+    // Método para obtener todos los proyectos
     public function getAllProyectos()
     {
         $this->query = "SELECT * FROM proyectos";
@@ -86,6 +86,7 @@ class Proyectos extends DBAbstractModel
         return $this->rows;
     }
 
+    // Método para obtener un proyecto por su ID
     public function getProyectosPorUsuariosId($id = '')
     {
         $sql = "SELECT * FROM proyectos WHERE usuarios_id = :id";
@@ -96,6 +97,7 @@ class Proyectos extends DBAbstractModel
         return $proyectos;
     }
 
+    // Método para obtener un proyecto por su ID
     public function anadirProyecto($titulo, $descripcion, $logo, $tecnologias, $visible, $usuarios_id)
     {
         $stmt = $this->db->prepare("INSERT INTO proyectos (titulo, descripcion, logo, tecnologias, visible, usuarios_id) VALUES (:titulo, :descripcion, :logo, :tecnologias, :visible, :usuarios_id)");
@@ -107,6 +109,7 @@ class Proyectos extends DBAbstractModel
         }
     }
 
+    // Método para eliminar un proyecto por su ID
     public function eliminarProyecto($id)
     {
         if ($id != '') {
@@ -119,25 +122,7 @@ class Proyectos extends DBAbstractModel
         }
     }
 
-    public function ocultarProyecto($id)
-    {
-        $this->query = "SELECT * FROM proyectos WHERE id = :id";
-        $this->parametros['id'] = $id;
-        $this->get_results_from_query();
-
-        if ($this->rows[0]['visible'] == 1) {
-            $this->query = "UPDATE proyectos SET visible = 0 WHERE id = :id";
-            $this->parametros['id'] = $id;
-            $this->get_results_from_query();
-            $this->mensaje = 'Proyecto ocultado';
-        } else {
-            $this->query = "UPDATE proyectos SET visible = 1 WHERE id = :id";
-            $this->parametros['id'] = $id;
-            $this->get_results_from_query();
-            $this->mensaje = 'Proyecto mostrado';
-        }
-    }
-
+    // MEtodo para editar un proyecto
     public function editarProyecto( $id, $titulo, $descripcion, $logo, $tecnologias, $visible, $usuarios_id)
     {
         $stmt = $this->db->prepare("UPDATE proyectos SET titulo = :titulo, descripcion = :descripcion, logo = :logo, tecnologias = :tecnologias, visible = :visible, usuarios_id = :usuarios_id WHERE id = :id");
