@@ -86,6 +86,16 @@ class Proyectos extends DBAbstractModel
         return $this->rows;
     }
 
+    public function getProyectoPorId($id)
+    {
+        $sql = "SELECT * FROM proyectos WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $proyecto = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $proyecto;
+    }
+
     // Método para obtener un proyecto por su ID
     public function getProyectosPorUsuariosId($id = '')
     {

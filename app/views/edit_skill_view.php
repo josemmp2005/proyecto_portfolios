@@ -5,7 +5,7 @@
 
 // Se obtienen los datos de la habilidad a editar y las categorías de habilidades desde el controlador de habilidades 
 $skills = $data["skill"];
-$id = $_GET['id'];
+$id = $data["id"];
 $skill = null;
 
 foreach ($skills as $s) {
@@ -34,11 +34,12 @@ $categorias = $data['categorias'];
 
 <body>
     <header>
-        <h1>Ajustes del perfil</h1>
+        <h1>Edicion de Skill</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
     </header>
     <nav>
         <ul>
-            <li><a href="/logout">Cerrar Sesión</a></li>
+            <li><a href="/edit"></a>Atras</a></li>
             <li><a href="/">Inicio</a></li>
         </ul>
     </nav>

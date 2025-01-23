@@ -15,6 +15,8 @@ class SkillController extends BaseController
     // Método para añadir una habilidad
     public function anadirSkillAction()
     {
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];
+
         // Si no hay un usuario autenticado, redirige a la página principal
         if (!isset($_SESSION['id'])) {
             header('Location: /');
@@ -47,7 +49,7 @@ class SkillController extends BaseController
     public function editarSkill()
     {
         // Obtiene el ID de la habilidad a editar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -70,6 +72,11 @@ class SkillController extends BaseController
             // Si la solicitud no es de tipo POST, muestra el formulario para editar una habilidad
             // Obtiene la habilidad a editar
             $skill = Skills::getInstancia();
+            $skills = $skill->getSkillPorId($id);;
+            if (!isset($_SESSION['id']) || $_SESSION['id'] !== $skills['usuarios_id']) {
+                header('Location: /');
+                return;
+            }
             $skill = $skill->getSkillsPorUsuariosId($_SESSION['id']);
 
             // Obtiene las categorías de habilidades
@@ -78,6 +85,7 @@ class SkillController extends BaseController
             $this->renderHTML('../views/edit_skill_view.php', [
                 'skill' => $skill,
                 'categorias' => $categorias,
+                'id' => $id,
             ]);
         }
     }
@@ -85,7 +93,7 @@ class SkillController extends BaseController
     // Método para eliminar una habilidad
     public function eliminarSkill() {
         // Obtiene el ID de la habilidad a eliminar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -95,6 +103,11 @@ class SkillController extends BaseController
 
         // Crea una instancia de la clase Skills y elimina la habilidad
         $skill = Skills::getInstancia();
+        $skills = $skill->getSkillPorId($id);;
+        if (!isset($_SESSION['id']) || $_SESSION['id'] !== $skills['usuarios_id']) {
+            header('Location: /');
+            return;
+        }
         $skill->eliminarSkill($id);
 
         // Redirige a la página de edición de habilidades si la habilidad se elimina correctamente

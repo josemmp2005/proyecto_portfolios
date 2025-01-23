@@ -84,6 +84,17 @@ class Skills extends DBAbstractModel
             return $skills;
     }
 
+    // Método para obtener una habilidad por su ID
+    public function getSkillPorId($id)
+    
+    {
+        $this->query = "SELECT * FROM skills WHERE id = :id";
+        $stmt = $this->db->prepare($this->query);
+        $stmt->execute(['id' => $id]);
+        $skill = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $skill;
+    }
+
     // Método para obtener las habilidades de un usuario
     public function anadirSkill($habilidades, $visible, $categorias_skills, $usuarios_id)
     {

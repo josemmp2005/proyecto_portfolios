@@ -30,10 +30,10 @@ class EmailSender {
     public function sendConfirmationMail($name, $surname, $email, $token) {
         // Crea una instancia de la clase Email
         $email = (new Email())
-            ->from('porfoliocreaciones@gmail.com')
+            ->from('creacionportfolio@gmail.com')
             ->to($email)
             ->priority(Email::PRIORITY_HIGH)
-            ->subject('Bienvenido al porfolio de Creaciones!')
+            ->subject('Verificacion de creacion de portfolio')
             // ->text('')
             ->html('<p>Para poder loguearte en el porfolio de Creaciones, necesitamos que valides tu correo. Date prisa, tienes 24 horas!</p><br><a href="http://portfolio.local/verificar/'.$token.'">VALIDA TU CORREO</a>');
 

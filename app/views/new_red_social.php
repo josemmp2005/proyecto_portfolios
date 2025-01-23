@@ -16,6 +16,7 @@
 </head>
 <header>
     <h1>Añadir Red Social</h1>
+    <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
 </header>
 <nav>
     <ul>

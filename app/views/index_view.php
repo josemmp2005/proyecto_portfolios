@@ -4,8 +4,12 @@
  * 
  */
 
-$autenticado = $data['autenticado'];
 $portfolios = $data['portfolios'];
+$autenticado = $data['autenticado'];
+
+if(!$autenticado){
+    $_SESSION['nombre'] = "Invitado";
+}
 
 ?>
 <!DOCTYPE html>
@@ -21,6 +25,7 @@ $portfolios = $data['portfolios'];
 <body>
     <header>
         <h1>Dashboard</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
     </header>
     <nav>
         <ul>
@@ -37,7 +42,6 @@ $portfolios = $data['portfolios'];
         <input type="text" name="nombre" id="nombre" placeholder="Buscador">
         <button type="submit" name="search">Buscar</button>
     </form>
-    <section>
 
         <section class="vistaPortfolios">
             <?php if (!empty($portfolios)): ?>
@@ -49,7 +53,7 @@ $portfolios = $data['portfolios'];
                         echo '<h3>' . htmlspecialchars($portfolio['nombre']) . '</h3>';
                         echo '<p class="correo">' . htmlspecialchars($portfolio['email']) . '</p>';
                         echo '<p class="categoriaProfesional">' . htmlspecialchars($portfolio['categoria_profesional']) . '</p>';
-                        echo '<a href="/verPortfolio?id=' . htmlspecialchars($portfolio['id']) . '">';
+                        echo '<a href="/verPortfolio/' . htmlspecialchars($portfolio['id']) . '">';
                         echo '<img src= img/visibility.svg alt=img id=visibility>';
                         echo '</a>';
                         echo '</article>';

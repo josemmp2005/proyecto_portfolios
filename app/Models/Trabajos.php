@@ -120,6 +120,15 @@ class Trabajos extends DBAbstractModel
         return $trabajos;
     }
 
+    // Método para obtener un trabajo por su ID
+    public function getTrabajoPorId($id)
+    {
+        $this->query = "SELECT * FROM trabajos WHERE id = :id";
+        $stmt = $this->db->prepare($this->query);
+        $stmt->execute(['id' => $id]);
+        $trabajo = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $trabajo;
+    }
     // Método para añadir un trabajo
     public function anadirTrabajo($titulo, $descripcion, $fecha_inicio, $fecha_final, $logros, $visible, $usuarios_id)
     {
@@ -139,7 +148,7 @@ class Trabajos extends DBAbstractModel
             $this->mensaje = 'Error al añadir trabajo';
         }
     }
-    
+
     // Método para eliminar un trabajo
     public function eliminarTrabajo($id = '') {
         if ($id != '') {

@@ -71,47 +71,47 @@ $router->add(array(
 
 $router->add(array(
     'name' => 'eliminarProyecto',
-    'path' => '/^\/eliminarProyecto\?id=\d+$/',
+    'path' => '/^\/eliminarProyecto\/\d+$/',
     'action' => [ProyectoController::class, 'eliminarProyecto'],
 ));
 $router->add(array(
     'name' => 'eliminarTrabajo',
-    'path' => '/^\/eliminarTrabajo\?id=\d+$/',
+    'path' => '/^\/eliminarTrabajo\/\d+$/',
     'action' => [TrabajoController::class, 'eliminarTrabajo'],
 ));
 $router->add(array(
     'name' => 'editarTrabajo',
-    'path' => '/^\/editarTrabajo\?id=\d+$/',
+    'path' => '/^\/editarTrabajo\/\d+$/',
     'action' => [TrabajoController::class, 'editarTrabajo'],
 ));
 
 $router->add(array(
     'name' => 'editarProyecto',
-    'path' => '/^\/editarProyecto\?id=\d+$/',
+    'path' => '/^\/editarProyecto\/\d+$/',
     'action' => [ProyectoController::class, 'editarProyecto'],
 ));
 
 $router->add(array(
     'name' => 'editarRedSocial',
-    'path' => '/^\/editarRedSocial\?id=\d+$/',
+    'path' => '/^\/editarRedSocial\/\d+$/',
     'action' => [RedSocialController::class, 'editarRedSocial'],
 ));
 
 $router->add(array(
     'name' => 'eliminarRedSocial',
-    'path' => '/^\/eliminarRedSocial\?id=\d+$/',
+    'path' => '/^\/eliminarRedSocial\/\d+$/',
     'action' => [RedSocialController::class, 'eliminarRedSocial'],
 ));
 
 $router->add(array(
     'name' => 'editarSkill',
-    'path' => '/^\/editarSkill\?id=\d+$/',
+    'path' => '/^\/editarSkill\/\d+$/',
     'action' => [SkillController::class, 'editarSkill'],
 ));
 
 $router->add(array(
     'name' => 'eliminarSkill',
-    'path' => '/^\/eliminarSkill\?id=\d+$/',
+    'path' => '/^\/eliminarSkill\/\d+$/',
     'action' => [SkillController::class, 'eliminarSkill'],
 ));
 
@@ -124,7 +124,7 @@ $router->add(array(
 
 $router->add(array(
     'name' => 'verPortfolio',
-    'path' => '/^\/verPortfolio\?id=\d+$/',
+    'path' => '/^\/verPortfolio\/\d+$/',
     'action' => [UserController::class, 'verPortfolio'],
 ));
 

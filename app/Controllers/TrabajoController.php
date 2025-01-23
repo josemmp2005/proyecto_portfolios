@@ -42,7 +42,7 @@ class TrabajoController extends BaseController
 
     public function editarTrabajo(){
         // Obtiene el ID del trabajo a editar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -67,9 +67,15 @@ class TrabajoController extends BaseController
         } else {
             // Si la solicitud no es de tipo POST, muestra el formulario para editar el trabajo
             $trabajo = Trabajos::getInstancia();
+            $trabajos = $trabajo->getTrabajoPorId($id);
+            if (!isset($_SESSION['id']) || $_SESSION['id'] !== $trabajos['usuarios_id']) {
+                header('Location: /');
+                return;
+            }
             $trabajo = $trabajo->getTrabajosPorUsuariosId($_SESSION['id']);
             $this->renderHTML('../views/edit_trabajo_view.php', [
                 'trabajo' => $trabajo,
+                'id'=>$id
             ]);
         }
     }
@@ -78,7 +84,7 @@ class TrabajoController extends BaseController
     public function eliminarTrabajo()
     {
          // Obtiene el ID del trabajo a eliminar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+         $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -88,6 +94,11 @@ class TrabajoController extends BaseController
 
         // Crea una instancia de la clase Trabajos y elimina el trabajo
         $trabajo = Trabajos::getInstancia();
+        $trabajos = $trabajo->getTrabajoPorId($id);
+        if (!isset($_SESSION['id']) || $_SESSION['id'] !== $trabajos['usuarios_id']) {
+            header('Location: /');
+            return;
+        }
         $trabajo->eliminarTrabajo($id);
 
         // Redirige a la página de edición de trabajos si el trabajo se elimina correctamente

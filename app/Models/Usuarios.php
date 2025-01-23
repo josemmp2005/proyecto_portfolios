@@ -173,13 +173,14 @@ class Usuarios extends DBAbstractModel
     }
 
     // Método para eliminar un usuario
-    public function update($id, $nombre, $apellidos, $password, $email, $categoria_profesional, $resumen_perfil, $visible)
+    public function update($id, $nombre, $apellidos, $foto, $password, $email, $categoria_profesional, $resumen_perfil, $visible)
     {
         try {
-            $stmt = $this->db->prepare("UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, password = :password, email = :email, categoria_profesional = :categoria_profesional, resumen_perfil = :resumen_perfil, visible = :visible WHERE id = :id");
+            $stmt = $this->db->prepare("UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, foto = :foto, password = :password, email = :email, categoria_profesional = :categoria_profesional, resumen_perfil = :resumen_perfil, visible = :visible WHERE id = :id");
             $stmt->execute([
                 ':nombre' => $nombre,
                 ':apellidos' => $apellidos,
+                ':foto' => $foto,
                 ':password' => $password,
                 ':email' => $email,
                 ':categoria_profesional' => $categoria_profesional,

@@ -3,9 +3,9 @@
  * Vista para editar un proyecto 
  */
 
-// Se obtiene el proyecto a editar
+// Se obtiene todos los proyectos del usuario y se busca el proyecto a editar por su ID
 $proyectos = $data["proyecto"];
-$id = $_GET['id'];
+$id = $data['id'];
 $proyecto = null;
 
 foreach ($proyectos as $p) {
@@ -34,16 +34,17 @@ if ($proyecto === null) {
 <body>
     <header>
         <h1>Ajustes del perfil</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
     </header>
     <nav>
         <ul>
-            <li><a href="/logout">Cerrar Sesión</a></li>
+            <li><a href="/edit"></a>Atras</a></li>
             <li><a href="/">Inicio</a></li>
         </ul>
     </nav>
     <main>
         <section class="editarPerfil">
-            <form action= "" method="POST" enctype="multipart/form-data" class="form-new-trabajo">
+            <form action="" method="POST" enctype="multipart/form-data" class="form-new-trabajo">
                 <label for="titulo">Título:</label>
                 <input type="text" id="titulo" name="titulo"
                     value="<?php echo htmlspecialchars($proyecto['titulo']); ?>" required>

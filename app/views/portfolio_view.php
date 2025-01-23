@@ -26,6 +26,8 @@ $skills = $data['skills'];
 <body>
     <header>
         <h1>Portfolio de <?php echo htmlspecialchars($usuario["nombre"]) ?></h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
+
     </header>
     <nav>
         <ul>

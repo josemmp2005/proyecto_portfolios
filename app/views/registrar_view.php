@@ -17,6 +17,7 @@
 <body>
     <header>
         <h1>Registro</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
     </header>
 
     <nav>

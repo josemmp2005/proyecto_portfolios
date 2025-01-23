@@ -38,7 +38,7 @@ class RedSocialController extends BaseController
     public function editarRedSocial()
     {
         // Obtiene el ID de la red social a editar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -59,9 +59,15 @@ class RedSocialController extends BaseController
         } else {
             // Si la solicitud no es de tipo POST, muestra el formulario para editar una red social
             $redSocial = RedesSociales::getInstancia();
+            $redesSociales = $redSocial->getRedSocialPorId($id);;
+            if (!isset($_SESSION['id']) || $_SESSION['id'] !== $redesSociales['usuarios_id']) {
+                header('Location: /');
+                return;
+            }
             $redSocial = $redSocial->getRedesSocialesPorUsuariosId($_SESSION['id']);
             $this->renderHTML('../views/edit_redes_sociales_view.php', [
                 'redSocial' => $redSocial,
+                'id' => $id,
             ]);
         }
     }
@@ -70,7 +76,7 @@ class RedSocialController extends BaseController
     public function eliminarRedSocial()
     {
         // Obtiene el ID de la red social a eliminar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -80,6 +86,11 @@ class RedSocialController extends BaseController
         
         // Crea una instancia de la clase RedesSociales y elimina la red social
         $redSocial = RedesSociales::getInstancia();
+        $redesSociales = $redSocial->getRedSocialPorId($id);;
+        if (!isset($_SESSION['id']) || $_SESSION['id'] !== $redesSociales['usuarios_id']) {
+            header('Location: /');
+            return;
+        }
         $redSocial->eliminarRedSocial($id);
         header('Location: /edit');
     }

@@ -9,6 +9,7 @@ $trabajos = $data['trabajos'];
 $proyectos = $data['proyectos'];
 $redes_sociales = $data['redes_sociales'];
 $skills = $data['skills'];
+
 ?>
 
 <!DOCTYPE html>
@@ -24,10 +25,11 @@ $skills = $data['skills'];
 <body>
     <header>
         <h1>Ajustes del perfil</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
     </header>
     <nav>
         <ul>
-            <li><a href="/logout">Cerrar Sesión</a></li>
+            <li><a href="/edit"></a>Atras</a></li>
             <li><a href="/">Inicio</a></li>
         </ul>
     </nav>
@@ -103,9 +105,9 @@ $skills = $data['skills'];
                                     echo "<td>No</td>";
                                 }
                                 echo "<td>" .
-                                    '<a href="/editarTrabajo?id=' . $trabajo['id'] . '">
+                                    '<a href="/editarTrabajo/' . $trabajo['id'] . '">
                         <img src="/img/edit.svg" alt="edit"></a> ' .
-                                    '<a href="/eliminarTrabajo?id=' . $trabajo['id'] . '">
+                                    '<a href="/eliminarTrabajo/' . $trabajo['id'] . '">
                         <img src="/img/delete.svg" alt="delete"></a>' .
                                     "</td>";
                                 echo "</tr>";
@@ -149,9 +151,9 @@ $skills = $data['skills'];
                                     echo "<td>No</td>";
                                 }
                                 echo "<td>" .
-                                    '<a href="/editarProyecto?id=' . $proyecto['id'] . '">
+                                    '<a href="/editarProyecto/' . $proyecto['id'] . '">
                         <img src="/img/edit.svg" alt="edit"></a> ' .
-                                    '<a href="/eliminarProyecto?id=' . $proyecto['id'] . '">
+                                    '<a href="/eliminarProyecto/' . $proyecto['id'] . '">
                         <img src="/img/delete.svg" alt="delete"></a>' .
                                     "</td>";
                                 echo "</tr>";
@@ -186,9 +188,9 @@ $skills = $data['skills'];
                                 echo "<td>" . htmlspecialchars($redSocial['redes_socialescol']) . "</td>";
                                 echo "<td>" . htmlspecialchars($redSocial['url']) . "</td>";
                                 echo "<td>" .
-                                    '<a href="/editarRedSocial?id=' . $redSocial['id'] . '">
+                                    '<a href="/editarRedSocial/' . $redSocial['id'] . '">
                     <img src="/img/edit.svg" alt="edit"></a> ' .
-                                    '<a href="/eliminarRedSocial?id=' . $redSocial['id'] . '">
+                                    '<a href="/eliminarRedSocial/' . $redSocial['id'] . '">
                     <img src="/img/delete.svg" alt="delete"></a>' .
                                     "</td>";
                                 echo "</tr>";
@@ -228,9 +230,9 @@ $skills = $data['skills'];
                                     echo "<td>No</td>";
                                 }
                                 echo "<td>" .
-                                    '<a href="/editarSkill?id=' . $skill['id'] . '">
+                                    '<a href="/editarSkill/' . $skill['id'] . '">
                         <img src="/img/edit.svg" alt="edit"></a> ' .
-                                    '<a href="/eliminarSkill?id=' . $skill['id'] . '">
+                                    '<a href="/eliminarSkill/' . $skill['id'] . '">
                         <img src="/img/delete.svg" alt="delete"></a>' .
                                     "</td>";
                                 echo "</tr>";

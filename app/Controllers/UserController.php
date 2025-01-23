@@ -27,6 +27,9 @@ class UserController extends BaseController
         // Si el usuario está autenticado, se muestra la página principal
         if (isset($_SESSION['autenticado'])) {
             $autenticado = $_SESSION['autenticado'];
+            $claseUsuario = Usuarios::getInstancia();
+            $usuario = $claseUsuario->getById($_SESSION['id']);
+            $_SESSION["nombre"] = $usuario['nombre'];
         } else {
             // Si el usuario no está autenticado, se muestra la página principal sin la opcion de editar perfil
             $autenticado = false;
@@ -60,7 +63,7 @@ class UserController extends BaseController
     // Método para ver un portafolio
     public function verPortfolio(){
         // Obtiene el ID del portafolio desde la URL
-        $id = $_GET['id'] ?? null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];
 
         // Si se proporciona un ID, muestra el portafolio
         if ($id) {
@@ -113,7 +116,7 @@ class UserController extends BaseController
                 header('Location: /');
             } else {
                 // Si las credenciales son incorrectas, muestra un mensaje de error
-                echo "<h2>Usuario o contraseña incorrectos</h2>";
+                header('Location: /login');
             }
         } else {
             // Si no se ha enviado el formulario de inicio de sesión, muestra el formulario de inicio de sesión
@@ -172,6 +175,7 @@ class UserController extends BaseController
             header('Location: /');
         } else {
             echo "<h2>" . $claseUsuario->getMensaje() . "</h2>";
+            header('Location: /');
         }
     }
 
@@ -199,6 +203,7 @@ class UserController extends BaseController
             // Si el portafolio existe, muestra los datos del portafolio
             if ($usuario) {
                 if (isset($_POST['submit'])) {
+                    $foto = $_POST['foto'] ?? "default.png";
                     $nombre = $_POST['nombre'] ?? $usuario['nombre'];
                     $apellidos = $_POST['apellidos'] ?? $usuario['apellidos'];
                     $password = $_POST['password'] ?? $usuario['password'];
@@ -206,7 +211,7 @@ class UserController extends BaseController
                     $categoria_profesional = $_POST['categoria_profesional'] ?? $usuario['categoria_profesional'];
                     $resumen_perfil = $_POST['resumen_perfil'] ?? $usuario['resumen_perfil'];
                     $visible = isset($_POST['visible']) ? 1 : 0;
-                    $updated = $claseUsuario->update($id, $nombre, $apellidos, $password, $email, $categoria_profesional, $resumen_perfil, $visible);
+                    $updated = $claseUsuario->update($id, $nombre, $apellidos, $foto, $password, $email, $categoria_profesional, $resumen_perfil, $visible);
 
                     // Si se actualiza el usuario, redirige a la página principal
                     if ($updated) {

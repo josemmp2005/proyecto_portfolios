@@ -5,7 +5,7 @@
 
      // Se obtiene todos los trabajos del usuario y se busca el trabajo a editar por su ID
     $trabajos = $data["trabajo"];
-    $id = $_GET['id'];
+    $id = $data['id'];
     $trabajo = null;
 
     foreach ($trabajos as $t) {
@@ -33,11 +33,12 @@
 
 <body>
     <header>
-        <h1>Ajustes del perfil</h1>
+        <h1>Edicion de Trabajo</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
     </header>
     <nav>
         <ul>
-            <li><a href="/logout">Cerrar Sesión</a></li>
+            <li><a href="/edit"></a>Atras</a></li>
             <li><a href="/">Inicio</a></li>
         </ul>
     </nav>
@@ -60,7 +61,7 @@
             </form>
         </section>        
     </main>
-    <footer class="footerLogin">
+    <footer>
         <p>José María Mayén Perez</p>
         <p>a23mapejo@gmail.com</p>
         <P>2ºDAW</P>

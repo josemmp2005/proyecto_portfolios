@@ -1,10 +1,19 @@
 /* Estilos generales */
+html{
+    height: 100%
+}
+
 body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
+
+
 
 h1, h3, h4 {
     text-align: center;
@@ -86,6 +95,7 @@ form button:hover {
 
 /* Estilos de la vista de portfolios */
 .vistaPortfolios {
+    flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -293,6 +303,7 @@ footer{
     width: 100%;
     bottom: 0;
     margin-bottom: 0;
+    flex-shrink: 0; /* Asegura que el footer no se comprima */
 
 }
 

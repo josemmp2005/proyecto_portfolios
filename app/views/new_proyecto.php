@@ -15,6 +15,7 @@
 </head>
 <header>
     <h1>Añadir Proyecto</h1>
+    <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
 </header>
 <nav>
     <ul>
@@ -22,6 +23,7 @@
         <li><a href="/">Inicio</a></li>
     </ul>
 </nav>
+
 <body>
     <form action="" method="post" class="form-new-trabajo">
         <label for="titulo">Título</label>

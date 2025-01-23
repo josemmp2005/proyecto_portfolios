@@ -84,7 +84,18 @@ class RedesSociales extends DBAbstractModel
         return $redes_sociales;
     }
 
-    // Método para añadir una red social
+    // Método para obtener una red social por su ID
+    public function getRedSocialPorId($id)
+    {
+        $this->query = "SELECT * FROM redes_sociales WHERE id = :id";
+        $stmt = $this->db->prepare($this->query);
+        $stmt->execute(['id' => $id]);
+        $red_social = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $red_social;
+    }
+
+
+   // Método para añadir una red social
     public function anadirRedSocial( $redes_socialescol, $url, $usuarios_id)
     {
         $stmt = $this->db->prepare("INSERT INTO redes_sociales (redes_socialescol, url, usuarios_id) VALUES (:redes_socialescol, :url, :usuarios_id)");

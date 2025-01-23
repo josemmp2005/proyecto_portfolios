@@ -16,6 +16,8 @@
 <body>
     <header>
         <h1>Inicio de Sesion</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
+
     </header>
 
     <nav>

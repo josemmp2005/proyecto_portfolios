@@ -5,7 +5,7 @@
 
  // Se reciben todas las redes sociales del usuario y el ID de la red social a editar
     $redes_sociales = $data["redSocial"];
-    $id = $_GET['id'];
+    $id = $data["id"];
     $red_social = null;
 
     foreach ($redes_sociales as $rs) {
@@ -33,11 +33,12 @@
 
 <body>
     <header>
-        <h1>Ajustes del perfil</h1>
+        <h1>Edicion de RRSS</h1>
+        <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
     </header>
     <nav>
         <ul>
-            <li><a href="/logout">Cerrar Sesión</a></li>
+            <li><a href="/edit"></a>Atras</a></li>
             <li><a href="/">Inicio</a></li>
         </ul>
     </nav>

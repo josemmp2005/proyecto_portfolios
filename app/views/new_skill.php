@@ -18,7 +18,8 @@
 </head>
 <header>
     <h1>Añadir Trabajo</h1>
-</header>
+    <h2><?php echo "Bienvenido " . $_SESSION["nombre"] . "!"; ?></h2>
+    </header>
 <nav>
     <ul>
         <li><a href="/edit">Atras</a></li>

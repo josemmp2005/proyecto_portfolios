@@ -42,7 +42,7 @@ class ProyectoController extends BaseController
     public function editarProyecto()
     {
         // Obtiene el ID del proyecto a editar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -66,9 +66,15 @@ class ProyectoController extends BaseController
         } else {
             // Si la solicitud no es de tipo POST, muestra el formulario para editar el proyecto
             $proyecto = Proyectos::getInstancia();
+            $proyectos = $proyecto->getProyectoPorId($id);
+            if (!isset($_SESSION['id']) || $_SESSION['id'] == '' || $_SESSION['id'] !== $proyectos['usuarios_id']) {
+                header('Location: /');
+                return;
+            }
             $proyecto = $proyecto->getProyectosPorUsuariosId($_SESSION['id']);
             $this->renderHTML('../views/edit_proyecto_view.php', [
                 'proyecto' => $proyecto,
+                'id' => $id,
             ]);
         }
     }
@@ -77,7 +83,7 @@ class ProyectoController extends BaseController
     public function eliminarProyecto()
     {
         // Obtiene el ID del proyecto a eliminar desde la URL
-        $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {
@@ -86,7 +92,12 @@ class ProyectoController extends BaseController
         }
 
         // Crea una instancia de la clase Proyectos y elimina el proyecto
-        $proyectos = Proyectos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
+        $proyectos = $proyecto->getProyectoPorId($id);
+        if (!isset($_SESSION['id']) || $_SESSION['id'] == '' || $_SESSION['id'] !== $proyectos['usuarios_id']) {
+            header('Location: /');
+            return;
+        }
         $proyectos->eliminarProyecto($id);
 
         // Redirige a la página de edición de proyectos
