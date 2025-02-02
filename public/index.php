@@ -128,8 +128,8 @@ $router->add(array(
     'action' => [UserController::class, 'verPortfolio'],
 ));
 
-// Obtiene la solicitud actual, eliminando la base URL de la ruta
-$request = str_replace(DIRBASEURL, '', $_SERVER['REQUEST_URI']); 
+// Obtiene la solicitud actual
+$request =  $_SERVER['REQUEST_URI']; 
 
 // Busca la ruta correspondiente a la solicitud
 $route = $router->match(request: $request);

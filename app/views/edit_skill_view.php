@@ -39,7 +39,7 @@ $categorias = $data['categorias'];
     </header>
     <nav>
         <ul>
-            <li><a href="/edit"></a>Atras</a></li>
+            <li><a href="/edit">Atras</a></li>
             <li><a href="/">Inicio</a></li>
         </ul>
     </nav>

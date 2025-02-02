@@ -201,40 +201,6 @@ class Usuarios extends DBAbstractModel
         $stmt = $this->db->prepare("SELECT * FROM usuarios");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-        // Obtener todos los trabajos asociados a cada usuario y agregarlos al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $trabajosModel = new Trabajos;
-            $trabajos = $trabajosModel->getTrabajosPorUsuariosId($idUsuario);
-            $usuario['trabajos'] = $trabajos;
-        }
-
-        // Obtener todos los proyectos asociados a cada usuario y agregarlos al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $proyectosModel = new Proyectos;
-            $proyectos = $proyectosModel->getProyectosPorUsuariosId($idUsuario);
-            $usuario['proyectos'] = $proyectos;
-        }
-
-        // Obtener todas las redes sociales asociadas a cada usuario y agregarlas al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $redesSocialesModel = new RedesSociales;
-            $redesSociales = $redesSocialesModel->getRedesSocialesPorUsuariosId($idUsuario);
-            $usuario['redes_sociales'] = $redesSociales;
-        }
-
-        // Obtener todas las habilidades asociadas a cada usuario y agregarlas al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $skillsModel = new Skills;
-            $skills = $skillsModel->getSkillsPorUsuariosId($idUsuario);
-            $usuario['skills'] = $skills;
-        }
-        return $usuarios;
     }
 
     // Método para buscar usuarios por nombre
@@ -243,38 +209,6 @@ class Usuarios extends DBAbstractModel
         $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE nombre LIKE :nombre");
         $stmt->execute([':nombre' => "%$nombre%"]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        // Obtener todos los trabajos asociados a cada usuario y agregarlos al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $trabajosModel = new Trabajos;
-            $trabajos = $trabajosModel->getTrabajosPorUsuariosId($idUsuario);
-            $usuario['trabajos'] = $trabajos;
-        }
-
-        // Obtener todos los proyectos asociados a cada usuario y agregarlos al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $proyectosModel = new Proyectos;
-            $proyectos = $proyectosModel->getProyectosPorUsuariosId($idUsuario);
-            $usuario['proyectos'] = $proyectos;
-        }
-
-        // Obtener todas las redes sociales asociadas a cada usuario y agregarlas al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $redesSocialesModel = new RedesSociales;
-            $redesSociales = $redesSocialesModel->getRedesSocialesPorUsuariosId($idUsuario);
-            $usuario['redes_sociales'] = $redesSociales;
-        }
-
-        // Obtener todas las habilidades asociadas a cada usuario y agregarlas al resultado
-        foreach ($usuarios as &$usuario) {
-            $idUsuario = $usuario['id'];
-            $skillsModel = new Skills;
-            $skills = $skillsModel->getSkillsPorUsuariosId($idUsuario);
-            $usuario['skills'] = $skills;
-        }
-        return $usuarios;
     }
 
     // Método para obtener un usuario por su ID

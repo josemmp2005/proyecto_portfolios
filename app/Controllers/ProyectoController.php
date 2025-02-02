@@ -6,6 +6,10 @@ use App\Controllers\BaseController;
 use App\Models\Proyectos;
 
 // Inclusión de archivos de funciones
+/**
+ * __DIR__ es una constante mágica de PHP que devuelve el directorio del archivo actual. 
+ * 
+ */
 require_once __DIR__ . '/../lib/generar_token.php';
 require_once __DIR__ . '/../lib/conectar.php';
 
@@ -83,7 +87,7 @@ class ProyectoController extends BaseController
     public function eliminarProyecto()
     {
         // Obtiene el ID del proyecto a eliminar desde la URL
-        $id = explode('/', string: $_SERVER['REQUEST_URI'])[2];;
+        $id = explode('/', $_SERVER['REQUEST_URI'])[2];;
 
         // Si no se proporciona un ID, muestra un mensaje de error
         if (!$id) {

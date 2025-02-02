@@ -172,6 +172,7 @@ class UserController extends BaseController
         if ($claseUsuario->getMensaje() == 'Usuario verificado') {
             $_SESSION['autenticado'] = true;
             $_SESSION['usuario'] = $claseUsuario->nombre;
+            $this->cerrarSesionAction();     
             header('Location: /');
         } else {
             echo "<h2>" . $claseUsuario->getMensaje() . "</h2>";
